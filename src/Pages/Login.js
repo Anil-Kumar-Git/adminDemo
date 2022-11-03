@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Url } from "../Middleware/BaseUrl";
 import { Spinner, Button } from "react-bootstrap";
 import PasswordModel from "../Components/models/PasswordModel";
+import { loginApi } from "../Middleware/Apis/Index";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -12,19 +13,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loginDone, setLoginDone] = useState(false);
-
+  
   const userLogin = async () => {
     let item = { email, password };
     if (email && password) {
-      let responce = await fetch(`${Url}/user/login`, {
-        method: "post",
-        body: JSON.stringify(item),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      let result = await responce.json();
+      let result = await loginApi(item)
       const data = result.data;
       if (result.success == true) {
         if (data.role === "admin") {
