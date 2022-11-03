@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-
+ const state=useSelector((state)=>state)
+ console.log("state",state)
   return (
     <div className="background-dark">
       {/* main start */}
