@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { Url } from "../components/BaseUrl";
+import { sendMailApi } from "../../Middleware/Apis/Index";
+import { Url } from "../../Middleware/BaseUrl";
 
 const ContactUsers = () => {
     const inputValue = {
@@ -25,7 +26,7 @@ const ContactUsers = () => {
     
       const sendMessage = async (e) => {
   
-      const res=await sendMailApi()
+      const result=await sendMailApi()
         if (result.success) {
             setValue(" ")  
           setDoneMessage("Your message has been sent.")

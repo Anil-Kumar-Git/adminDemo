@@ -1,4 +1,5 @@
-const rootUrl = "https://demoprojectapis.herokuapp.com";
+// const rootUrl = "https://demoprojectapis.herokuapp.com";
+const rootUrl= "http://localhost:3000"
 const token = localStorage.getItem("token");
 
 let config = {
@@ -7,6 +8,22 @@ let config = {
   },
   method: "get",
 };
+
+export const loginApi = async (value) => {
+    const config={
+      method: "post",
+      body: JSON.stringify(value),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+    let responce = await fetch(`${rootUrl}/users/login`, config);
+    let res = await responce.json();
+    console.log(res,"resdsljkdoe");
+    return res
+    // return { status: res.status, token:res.token , data: res.data, message: res.message ,success:res.success };
+  };
 
 export const getApi = async () => {
   let responce = await fetch(`${rootUrl}/user/alldata`, config);
@@ -98,7 +115,7 @@ export const editProfileApi = async (value) => {
 export const sendMailApi = async (value) => {
   let config = {
     method: "post",
-    body: JSON.stringify({ name, email, message,subject}),
+    body: JSON.stringify({ value}),
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",

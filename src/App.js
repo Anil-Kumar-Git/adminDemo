@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Layout from "./Layouts/Main/Layout";
 import Login from "./Pages/Login";
@@ -7,10 +8,11 @@ import Error from "./Pages/Users/Error";
 import Footer from "./Layouts/Footer/Footer";
 import ProtectedComponent from "./Routes/protectedRoutes";
 import PrivetComponent from "./Routes/privetRoute";
-import ResetPwd from "./Pages/ResetPwd"
+import ResetPwd from "./Pages/ResetPwd";
 import List from "./Pages/Users/List";
 import MyProfile from "./Pages/Profile/MyProfile";
 import ContactUsers from "./Pages/Users/ContactUsers";
+import ValidateForm from "./Pages/ValidateForm";
 
 function App() {
   const [login, setLogin] = useState(false);
@@ -18,29 +20,42 @@ function App() {
     setLogin(event);
   };
 
+  const isNotAuthenticated = (pageComponent) => {
+    const token = localStorage.getItem('token')
+  
+    if (token) {
+      return <Navigate to={{ pathname: '/login' }} />
+    }
+    return pageComponent
+  }
+  const isAuthenticated = (pageComponent) => {
+    const token = localStorage.getItem('token')
+  
+    if (!token) {
+      return <Navigate to={{ pathname: '/' }} />
+    }
+    return pageComponent
+  }
+
   return (
     <div>
       <BrowserRouter>
-        {login ? "" : <Layout />}
-        <div className="background-dark">
-          <Routes>
-            <Route element={<ProtectedComponent auth={showLayout} />}>
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/reset-password/:token"
-                element={<ResetPwd/>}
-              />
-            </Route>
-            <Route element={<PrivetComponent auth={showLayout} />}>
+        <Routes>
+          <Route element={<ProtectedComponent />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/reset-password/:token" element={<ResetPwd />} />
+          </Route>
+          <Route element={<Layout />}>
+            <Route element={<PrivetComponent />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/list" element={<List />} />
               <Route path="/myprofile" element={<MyProfile />} />
-              <Route path="/user-contact/" element={<ContactUsers />} /> 
+              <Route path="/user-contact/" element={<ContactUsers />} />
+              <Route path="/add-user" element={<ValidateForm/>}/>
             </Route>
-            <Route path="/*" element={<Error />} />
-          </Routes>
-        </div>
-        {login ? "" : <Footer />}
+          </Route>
+          <Route path="/*" element={<Error />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

@@ -9,6 +9,7 @@ import AddUserModel from "../../Components/models/AddUserModel";
 import { Table } from "react-bootstrap";
 import EditUserModel from "../../Components/models/EditUser";
 import { getApi, searchApi } from "../../Middleware/Apis/Index";
+import { toast } from "react-toastify";
 
 const List = () => {
   const [loading, setLoading] = useState(false);
@@ -36,21 +37,19 @@ const List = () => {
     setLoading(true);
     let result = await getApi();
     if (result.status == 200) {
-      setMessage(result.message);
-      setColor("success");
+      toast.success(result.message,{position:"top-center"})
       if (result.data.length > 0) {
         setLoading(false);
         setState(result.data);
       } else {
-        setMessage("not any data");
-        setColor("warning");
+        toast.warn("now not any data of users",{position:"top-left"})
       }
     } else if (result.status == 400) {
-      setMessage("status 400");
-      setColor("danger");
+      toast.warn("data not found",{position:"top-left"})
+     
     } else {
-      setMessage("status 500");
-      setColor("danger");
+      toast.error("server Error",{position:"top-left"})
+   
     }
   };
 
@@ -65,8 +64,7 @@ const List = () => {
         setState(result.data);
       } else {
         setState(result.data);
-        setMessage("User not mached");
-        setColor("warning");
+        toast.warn("User not mached",{position:"top-left"})
       }
     } else {
       let result = await getApi();
