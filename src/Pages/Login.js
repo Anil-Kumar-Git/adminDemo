@@ -1,10 +1,13 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Url } from "../Middleware/BaseUrl";
 import { Spinner, Button } from "react-bootstrap";
 import PasswordModel from "../Components/models/PasswordModel";
 import { loginApi } from "../Middleware/Apis/Index";
+// import { middleLogin } from "../Middleware/Apis/middleApis";
+import { loginUser } from "../Services/login/actions";
+import { middleLogin } from "../Middleware/AxiosApis/apiResponce";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -12,33 +15,40 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loginDone, setLoginDone] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
+
+  //fetch Api Login
+  // const userLogin = async () => {
+  //   setLoading(true);
+  //   let item = { email, password };
+  //   let res = await middleLogin(item);
+  //   if (res?.data) {
+  //     setLoading(false);
+  //     navigate("/");
+  //     dispatch(loginUser(res?.data));
+  //   } else {
+  //     setLoading(false);
+  //     setError(res.message);
+  //   }
+  // };
+
+  //Axios Api Login //Live Bright-swipe-Apis
   const userLogin = async () => {
-    let item = { email, password };
-    if (email && password) {
-      let result = await loginApi(item)
-      const data = result.data;
-      if (result.success == true) {
-        if (data.role === "admin") {
-          setLoginDone(true);
-          let name = result.data.name;
-          let token = result.token;
-          const adminId = result.data._id;
-          navigate("/");
-          // alert(`welcome ${name} `);
-          localStorage.setItem("token", token);
-          localStorage.setItem("adminId", adminId);
-        } else {
-          setError(
-            "* only admin can access this page"
-          );
-        }
-      } else {
-        setError("* " + result.message);
-      }
+    setLoading(true);
+    const allValues = {
+      value: email,
+      password:password,
+      userType: "admin",
+      type: "email",
+    }
+    let res = await middleLogin(allValues);
+    if (res?.data) {
+      setLoading(false);
+      navigate("/");
+      dispatch(loginUser(res?.data));
     } else {
-      setError("please fill all fields");
+      setLoading(false);
+      setError(res.message);
     }
   };
 
@@ -103,10 +113,38 @@ const Login = () => {
                             required
                           />
                         </div>
-
                         <div className="col-12">
-                          {loginDone? (
-                              <Button
+                          <input
+                            type="checkbox"
+                            id="remember-me-checkbox"
+                            defaultChecked=""
+                          />
+                          <label htmlFor="remember-me-checkbox">
+                            Stay signed in for 30 days
+                          </label>
+
+                          <Button
+                            variant="link"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop"
+                          >
+                            forgot password
+                          </Button>
+
+                          <div
+                            className="do-not-remember-message"
+                            id="do-not-remember-message"
+                            style={{ display: "none" }}
+                          >
+                            <span>
+                              You will be logged out after 30 minutes of
+                              inactivity.
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-12">
+                          {loading ? (
+                            <Button
                               className="btn btn-primary w-100"
                               variant="primary"
                               disabled
@@ -120,7 +158,6 @@ const Login = () => {
                               />
                               Loading...
                             </Button>
-                          
                           ) : (
                             <button
                               className="btn btn-primary w-100"
@@ -131,16 +168,6 @@ const Login = () => {
                             </button>
                           )}
                         </div>
-
-                        <PasswordModel/>
-                        <div className="col-12">
-                          <p className="small mb-0">
-                            Lost your Password ?{" "}
-                            <Button variant="link" data-bs-toggle="modal"
-                                 data-bs-target="#staticBackdrop"
-                            >forgot password</Button>
-                          </p>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -150,6 +177,7 @@ const Login = () => {
           </section>
         </div>
       </main>
+      <PasswordModel />
     </div>
   );
 };

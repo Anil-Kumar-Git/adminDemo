@@ -1,3 +1,5 @@
+import { postConfig } from "./apiConfig";
+
 // const rootUrl = "https://demoprojectapis.herokuapp.com";
 const rootUrl= "http://localhost:3000"
 const token = localStorage.getItem("token");
@@ -9,21 +11,12 @@ let config = {
   method: "get",
 };
 
-export const loginApi = async (value) => {
-    const config={
-      method: "post",
-      body: JSON.stringify(value),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }
-    let responce = await fetch(`${rootUrl}/users/login`, config);
+const loginApi = async (value) => {
+    let responce = await fetch(`${rootUrl}/users/login`, postConfig(value));
     let res = await responce.json();
-    console.log(res,"resdsljkdoe");
+    console.log(res,"res loginApi");
     return res
-    // return { status: res.status, token:res.token , data: res.data, message: res.message ,success:res.success };
-  };
+    };
 
 export const getApi = async () => {
   let responce = await fetch(`${rootUrl}/user/alldata`, config);
@@ -127,3 +120,7 @@ export const sendMailApi = async (value) => {
   console.log(res,"resdsljkdoe");
   return { status: res.status, data: res.data, message: res.message };
 };
+
+export{
+  loginApi,
+}
