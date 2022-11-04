@@ -8,7 +8,8 @@ import {
 const initialState = {
   error: "",
   loading: false,
-  loginUserData:""
+  loginUserData:"",
+  loginMessage:""
 }
 
 const loginReducer = (state = initialState, action) => {

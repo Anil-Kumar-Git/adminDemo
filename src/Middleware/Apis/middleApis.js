@@ -1,7 +1,7 @@
 import { loginApi } from "./Index";
 
 const middleLogin = async (value) => {
-  if (value.email && value.password) {
+  if (value.value && value.password) {
     let responce = await loginApi(value);
     if (responce?.status == "200") {
       if (responce?.data.role === "admin") {

@@ -5,8 +5,9 @@ import { Url } from "../Middleware/BaseUrl";
 import { Spinner, Button } from "react-bootstrap";
 import PasswordModel from "../Components/models/PasswordModel";
 import { loginApi } from "../Middleware/Apis/Index";
-import { middleLogin } from "../Middleware/Apis/middleApis";
+// import { middleLogin } from "../Middleware/Apis/middleApis";
 import { loginUser } from "../Services/login/actions";
+import { middleLogin } from "../Middleware/AxiosApis/apiResponce";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -16,10 +17,31 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  //fetch Api Login
+  // const userLogin = async () => {
+  //   setLoading(true);
+  //   let item = { email, password };
+  //   let res = await middleLogin(item);
+  //   if (res?.data) {
+  //     setLoading(false);
+  //     navigate("/");
+  //     dispatch(loginUser(res?.data));
+  //   } else {
+  //     setLoading(false);
+  //     setError(res.message);
+  //   }
+  // };
+
+  //Axios Api Login //Live Bright-swipe-Apis
   const userLogin = async () => {
     setLoading(true);
-    let item = { email, password };
-    let res = await middleLogin(item);
+    const allValues = {
+      value: email,
+      password:password,
+      userType: "admin",
+      type: "email",
+    }
+    let res = await middleLogin(allValues);
     if (res?.data) {
       setLoading(false);
       navigate("/");
