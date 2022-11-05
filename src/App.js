@@ -13,6 +13,8 @@ import List from "./Pages/Users/List";
 import MyProfile from "./Pages/Profile/MyProfile";
 import ContactUsers from "./Pages/Users/ContactUsers";
 import ValidateForm from "./Pages/ValidateForm";
+import VerifyEmail from './Pages/verifyEmail';
+import ForgetPwd from './Pages/forgetPwd';
 
 function App() {
   const [login, setLogin] = useState(false);
@@ -43,7 +45,10 @@ function App() {
         <Routes>
           <Route element={<ProtectedComponent />}>
             <Route path="/login" element={<Login />} />
-            <Route path="/reset-password/:token" element={<ResetPwd />} />
+            <Route path="/forget-pwd" element={<ForgetPwd />} />
+            <Route path="/verify-email/:email/:verifyId" element={<VerifyEmail />} />
+            {/* <Route path="/reset-password/:token" element={<ResetPwd />} /> */}
+            <Route path="/reset-password" element={<ResetPwd />} />
           </Route>
           <Route element={<Layout />}>
             <Route element={<PrivetComponent />}>

@@ -19,13 +19,7 @@ const Dashboard = () => {
               <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
                 {/* End Logo */}
 
-                <div className="card mb-3">
-                  <div className="card-body">
-                    <div className="pt-4 pb-2">
-                      <p className="text-center small">take a servay</p>
-                    </div>
-                  </div>
-                </div>
+              
               </div>
             </div>
           </div>
