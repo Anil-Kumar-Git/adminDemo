@@ -43,6 +43,8 @@ const VerifyEmail = () => {
     }
   };
 
+  console.log(validator,"validtor")
+
   const recoverPwd = async () => {
       setLoading(true);
       const allValues = {
@@ -98,7 +100,7 @@ const VerifyEmail = () => {
                             Code
                           </label>
                             <input
-                              type="number"
+                              type="text"
                               name="code"
                               value={code}
                               onChange={(e) => setCode(e.target.value)}
@@ -106,7 +108,7 @@ const VerifyEmail = () => {
                               required
                               onBlur={()=>validator.showMessageFor('code')}
                             />  
-                            {validator.message("code",code,"required|min:6|max:6")}                       
+                            {validator.message("code",code,"required|numeric|min:0,num|size:6")}                       
                         </div>
                         <span className="small error-red">
                         {!validator.fields.code &&

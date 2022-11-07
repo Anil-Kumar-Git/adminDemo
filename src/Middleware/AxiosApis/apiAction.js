@@ -16,8 +16,9 @@ const Post=async(url,data)=>{
 }
 
 const Put=async(url,data)=>{
+    let token = localStorage.getItem("token");
     try{
-        const response = await axios.post(`${API_URL}/${url}`,data,{
+        const response = await axios.put(`${API_URL}/${url}`,data,{
             headers: { Authorization: token },
           })
         return response.data

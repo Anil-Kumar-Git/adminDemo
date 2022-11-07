@@ -1,18 +1,18 @@
-import { forgetApi, loginApi, verifyApi } from "./allApis";
+import { forgetApi, loginApi, resetApi, verifyApi } from "./allApis";
 
 
 const middleLogin = async (value) => {
   if (value.value && value.password && value.userType && value.type) {
     try {
-      let responce = await loginApi(value);
-      if (responce.code=="200") {
-        localStorage.setItem("token", responce?.accessToken);
-        localStorage.setItem("adminAuth", JSON.stringify(responce?.data));
-        return { data: responce?.data  };
+      let response = await loginApi(value);
+      if (response.code=="200") {
+        localStorage.setItem("token", response?.accessToken);
+        localStorage.setItem("adminAuth", JSON.stringify(response?.data));
+        return { data: response?.data  };
       }
     } 
     catch (err) {
-      console.log(err, "error apiResponce");
+      console.log(err, "error apiresponse");
       if(err.code=="400"){
         return { message: err.message };
       }else{
@@ -26,16 +26,16 @@ const middleLogin = async (value) => {
 
 const middleForget = async (value) => {
     try {
-      let responce = await forgetApi(value);
-      console.log(responce, "responce apiresponse");
-      if (responce.code=="200") {
-        localStorage.setItem("forgetId", responce?.data.verificationId);
+      let response = await forgetApi(value);
+      console.log(response, "response apiresponse");
+      if (response.code=="200") {
+        localStorage.setItem("forgetId", response?.data.verificationId);
         localStorage.setItem("userEmail", value);
-        return { data: responce?.data ,message: responce.message};
+        return { data: response?.data ,message: response.message};
       }
     } 
     catch (err) {
-      console.log(err, "error apiResponce");
+      console.log(err, "error apiresponse");
       if(err.code=="400"){
         return { message: err.message };
       }else{
@@ -46,21 +46,38 @@ const middleForget = async (value) => {
 
 const middleForgetVerify = async (value) => {
   try {
-    let responce = await verifyApi(value);
-    console.log(responce, "responce apiresponse");
-    if (responce.code=="200") {
-      localStorage.setItem("token", responce?.accessToken);
-      return { data: responce  };
+    let response = await verifyApi(value);
+    console.log(response, "response apiresponse");
+    if (response.code == "200") {
+      localStorage.setItem("token", response?.accessToken);
+      return { data: response };
     }
-  } 
-  catch (err) {
-    console.log(err, "error apiResponce");
-    if(err.code=="400"){
+  } catch (err) {
+    console.log(err, "error apiresponse");
+    if (err.code == "400") {
       return { message: err.message };
-    }else{
+    } else {
       return { message: err.message };
     }
   }
 };
 
-export { middleLogin,middleForget,middleForgetVerify };
+const middleReset = async (value) => {
+  try {
+    let response = await resetApi(value);
+    console.log(response, "response apiresponse");
+    if (response.code == "200") {
+      localStorage.setItem("token", response?.accessToken);
+      return { data: response };
+    }
+  } catch (err) {
+    console.log(err, "error apiresponse");
+    if (err.code == "400") {
+      return { message: err.message };
+    } else {
+      return { message: err.message };
+    }
+  }
+};
+
+export { middleLogin,middleForget,middleForgetVerify,middleReset };

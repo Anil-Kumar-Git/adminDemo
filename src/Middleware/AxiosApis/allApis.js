@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Post } from "./apiAction";
+import { Post, Put } from "./apiAction";
 
 const loginApi = async (value) => {
   // console.log(value,"value")
@@ -35,5 +35,17 @@ const verifyApi = async (value) => {
   }
 };
 
+const resetApi = async (value) => {
+  // console.log(value,"value")
+  try {
+    let responce = await Put(`users/update/password`, value);
+    console.log(responce, "responce allApi");
+    return responce;
+  } catch (err) {
+    console.log(err, "err allApi");
+    throw err;
+  }
+};
 
-export { loginApi ,forgetApi,verifyApi};
+
+export { loginApi ,forgetApi,verifyApi,resetApi};
